@@ -6,7 +6,7 @@
 class Singleton
 {
 protected:
-    static Singleton *pSingleton;
+    static volatile Singleton *pSingleton;
     std::string _value;
     static std::mutex _mutex; // For Thread-safe
     Singleton(const std::string value) : _value(value)
@@ -24,10 +24,6 @@ public:
     {
         return _value;
     }
-
-    Singleton();
-
-    ~Singleton();
 };
 Singleton *Singleton::pSingleton = nullptr;
 std::mutex Singleton::_mutex; //  For Thread-safe
@@ -43,13 +39,7 @@ Singleton *Singleton::GetInstance(const std::string &value)
     }
     return pSingleton;
 }
-Singleton::Singleton()
-{
-}
 
-Singleton::~Singleton()
-{
-}
 void ThreadFoo()
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
